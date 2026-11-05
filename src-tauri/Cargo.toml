@@ -1,0 +1,30 @@
+[package]
+name = "local-ollama"
+version = "0.1.0"
+description = "A local Ollama model manager for Windows"
+license = "MIT"
+edition = "2021"
+
+[lib]
+name = "local_ollama_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["tray-icon"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+reqwest = { version = "0.12", default-features = false, features = ["json", "stream", "rustls-tls"] }
+tokio = { version = "1", features = ["fs", "sync", "time", "rt", "macros", "net", "io-util"] }
+tokio-util = "0.7"
+futures-util = "0.3"
+uuid = { version = "1", features = ["v4"] }
+url = "2"
+scraper = "0.29.0"
+
+[profile.release]
+strip = true
+lto = "thin"
+codegen-units = 1

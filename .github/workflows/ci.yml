@@ -1,0 +1,47 @@
+name: Windows CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: windows-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check-and-build:
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: package-lock.json
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
+      - name: Install JavaScript dependencies
+        run: npm ci
+      - name: Frontend tests
+        run: npm test
+      - name: Rust formatting
+        run: npm run desktop:fmt:check -- -SystemToolchain
+      - name: Rust check
+        run: npm run desktop:check -- -SystemToolchain
+      - name: Rust tests
+        run: npm run desktop:test -- -SystemToolchain
+      - name: Build frontend and Windows installer
+        run: npm run desktop:build -- -SystemToolchain
+      - name: Upload installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-installer
+          path: src-tauri/target/release/bundle/nsis/*-setup.exe
+          if-no-files-found: error

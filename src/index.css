@@ -1,0 +1,114 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  font-family: "Segoe UI Variable", "Segoe UI", "Microsoft YaHei UI", sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.205 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: var(--foreground);
+  --popover: oklch(1 0 0);
+  --popover-foreground: var(--foreground);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.96 0 0);
+  --secondary-foreground: oklch(0.3 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.49 0 0);
+  --accent: oklch(0.93 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.205 0 0);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.91 0 0);
+  --input: oklch(0.87 0 0);
+  --ring: oklch(0.5 0 0);
+  --sidebar: oklch(0.98 0 0);
+  --success: oklch(0.24 0 0);
+  --success-background: oklch(0.94 0 0);
+}
+
+.dark {
+  color-scheme: dark;
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.94 0 0);
+  --card: oklch(0.19 0 0);
+  --card-foreground: var(--foreground);
+  --popover: oklch(0.22 0 0);
+  --popover-foreground: var(--foreground);
+  --primary: oklch(0.94 0 0);
+  --primary-foreground: oklch(0.19 0 0);
+  --secondary: oklch(0.26 0 0);
+  --secondary-foreground: var(--foreground);
+  --muted: oklch(0.23 0 0);
+  --muted-foreground: oklch(0.7 0 0);
+  --accent: oklch(0.28 0 0);
+  --accent-foreground: oklch(0.94 0 0);
+  --destructive: oklch(0.9 0 0);
+  --destructive-foreground: oklch(0.19 0 0);
+  --border: oklch(0.3 0 0);
+  --input: oklch(0.35 0 0);
+  --ring: oklch(0.65 0 0);
+  --sidebar: oklch(0.17 0 0);
+  --success: oklch(0.9 0 0);
+  --success-background: oklch(0.26 0 0);
+}
+
+@layer base {
+  * { @apply border-border outline-ring/50; letter-spacing: 0; }
+  body { @apply m-0 bg-background text-foreground; min-width: 720px; font-size: 14px; }
+  button, [role="menuitem"], [role="option"] { cursor: pointer; }
+  button:disabled { cursor: not-allowed; }
+  ::selection { background: var(--accent); }
+  ::-webkit-scrollbar { width: 7px; height: 7px; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 8px; }
+}
+
+.app-shell { display: grid; grid-template-columns: 208px minmax(0, 1fr); height: 100dvh; overflow: hidden; }
+.sidebar { background: var(--sidebar); }
+.nav-item { display: flex; align-items: center; gap: 11px; width: 100%; padding: 10px 13px; border-radius: 7px; font-size: 14px; color: var(--muted-foreground); transition: background 140ms, color 140ms; }
+.nav-item:hover { background: var(--muted); color: var(--foreground); }
+.nav-item[aria-current="page"] { background: var(--accent); color: var(--accent-foreground); font-weight: 600; }
+.nav-item:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+.model-state { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted-foreground); }
+.model-state[data-running="true"] { color: var(--success); }
+.state-dot { height: 6px; width: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+.table-wrap { overflow: hidden; border: 1px solid var(--border); border-radius: 10px; background: var(--card); }
+.section-label { font-size: 12px; font-weight: 600; letter-spacing: 0; color: var(--muted-foreground); }
+.mono { font-family: "Cascadia Code", Consolas, monospace; font-variant-numeric: tabular-nums; }
+.status-success { background: var(--success-background); color: var(--success); }
+.indeterminate > div { width: 34%; animation: progress-slide 1.6s infinite ease-in-out; }
+@keyframes progress-slide { 0% { transform: translateX(-110%); } 100% { transform: translateX(310%); } }
+@media (max-width: 1000px) { .app-shell { grid-template-columns: 184px minmax(0, 1fr); } .secondary-column { display: none; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; animation-iteration-count: 1 !important; } }
